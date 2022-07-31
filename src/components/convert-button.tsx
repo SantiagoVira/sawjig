@@ -1,4 +1,5 @@
-import { Button, Tooltip } from "@chakra-ui/react";
+import { ArrowDownIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import axios from "axios";
 import { useAtom } from "jotai";
 import {
@@ -7,6 +8,7 @@ import {
   errorCodeAtom,
   numTiles,
 } from "../atoms";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const ConvertButton: React.FC = () => {
   const [inputImage] = useAtom(inputImageAtom);
@@ -14,9 +16,11 @@ const ConvertButton: React.FC = () => {
   const [, setDisplay] = useAtom(displayImage);
   const [[rows, cols]] = useAtom(numTiles);
 
+  const isMobile = useIsMobile();
+
   const isDisabled = inputImage === "" || errorCode !== 0;
   const content = [
-    "Press this button and watch the magic happen!",
+    "Jigsaw!",
     "Upload your own image to try it out!",
     "You gotta have some rows!",
     "You gotta have some columns!",
@@ -44,29 +48,47 @@ const ConvertButton: React.FC = () => {
     setDisplay(URL.createObjectURL(response.data));
   };
   return (
-    <Tooltip
-      label={label}
-      closeDelay={500}
-      shouldWrapChildren
-      borderColor="bg.500 !important"
-      border="1px solid"
-      bg="bg.900"
-      borderRadius="8px"
-      p="0.6rem">
-      <Button
-        onClick={
-          isDisabled ? () => console.log("Unable to Convert Image") : convert
-        }
-        backgroundColor={isDisabled ? "bg.800" : "pink.500"}
-        _hover={{
-          bgColor: isDisabled ? "bg.800" : "pink.600",
-        }}
-        _active={{
-          bgColor: isDisabled ? "bg.800" : "pink.700",
-        }}>
-        Jigsaw!
-      </Button>
-    </Tooltip>
+    <Flex
+      flexDirection="column"
+      alignItems="center"
+      gap="1rem"
+      w={isMobile ? "90%" : "fit-content"}>
+      <Tooltip
+        label={label}
+        closeDelay={200}
+        shouldWrapChildren
+        borderColor="bg.500 !important"
+        border="1px solid"
+        bg="bg.900"
+        borderRadius="8px"
+        p="0.6rem"
+        isDisabled={isMobile || errorCode === 0}>
+        <Button
+          onClick={
+            isDisabled ? () => console.log("Unable to Convert Image") : convert
+          }
+          backgroundColor={isDisabled ? "bg.800" : "pink.500"}
+          _hover={{
+            bgColor: isDisabled ? "bg.800" : "pink.600",
+          }}
+          _active={{
+            bgColor: isDisabled ? "bg.800" : "pink.700",
+          }}
+          aria-label="arrow-icon"
+          w="100%">
+          {isMobile ? (
+            <Flex gap="0.5rem">
+              {errorCode === 0 && <ArrowDownIcon boxSize={5} />} {label}
+            </Flex>
+          ) : (
+            <Flex gap="0.5rem">
+              Jigsaw!
+              <ArrowForwardIcon boxSize={5} />
+            </Flex>
+          )}
+        </Button>
+      </Tooltip>
+    </Flex>
   );
 };
 

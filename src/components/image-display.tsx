@@ -1,19 +1,10 @@
-import { Image } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 import { displayImage } from "../atoms";
+import StyledImage from "./image";
 
 const ImageDisplay: React.FC = () => {
   const [source] = useAtom(displayImage);
-  return (
-    <Image
-      display="block"
-      src={source}
-      alt="cut-up-image"
-      maxW="450"
-      maxH="450"
-      borderRadius="16px"
-    />
-  );
+  return <StyledImage src={source} alt="cut-up-image" borderRadius="16px" />;
 };
 
 export default ImageDisplay;

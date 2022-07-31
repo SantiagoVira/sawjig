@@ -1,4 +1,4 @@
-import { Box, Center, Image, Input, Button } from "@chakra-ui/react";
+import { Box, Center, Input, Button } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { useAtom } from "jotai";
 import {
@@ -8,6 +8,8 @@ import {
   originalImage,
 } from "../atoms";
 import Grid from "./grid";
+import { useIsMobile } from "../hooks/useIsMobile";
+import StyledImage from "./image";
 
 const ImageInput: React.FC = () => {
   const [image, setImage] = useAtom(originalImage);
@@ -17,6 +19,7 @@ const ImageInput: React.FC = () => {
 
   const [, setErrorCode] = useAtom(errorCodeAtom);
   const [[rows, cols]] = useAtom(numTiles);
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -57,13 +60,10 @@ const ImageInput: React.FC = () => {
               opacity: 1,
             },
           }}>
-          <Grid w={imageSize[0]} h={imageSize[1]}>
-            <Image
-              display="block"
+          <Grid w={imageSize[0]} h={imageSize[1]} key={`${isMobile}`}>
+            <StyledImage
               src={image}
               alt="selected-image"
-              maxW="450"
-              maxH="450"
               borderRadius="16px"
               onLoad={(data: React.BaseSyntheticEvent) =>
                 setImageSize([
@@ -98,11 +98,14 @@ const ImageInput: React.FC = () => {
               }}
               textAlign="center"
               color="white"
-              bgColor="bg.700"
               borderRadius="md"
               fontSize="14px"
+              backgroundColor="pink.500"
               _hover={{
-                bgColor: "bg.800",
+                bgColor: "pink.600",
+              }}
+              _active={{
+                bgColor: "pink.700",
               }}>
               Upload
             </Button>
