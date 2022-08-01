@@ -7,6 +7,7 @@ import {
   inputImageAtom,
   errorCodeAtom,
   numTiles,
+  inputImageSize,
 } from "../atoms";
 import { useIsMobile } from "../hooks/useIsMobile";
 
@@ -15,6 +16,7 @@ const ConvertButton: React.FC = () => {
   const [errorCode] = useAtom(errorCodeAtom);
   const [, setDisplay] = useAtom(displayImage);
   const [[rows, cols]] = useAtom(numTiles);
+  const [[imageWidth, imageHeight]] = useAtom(inputImageSize);
 
   const isMobile = useIsMobile();
 
@@ -34,6 +36,7 @@ const ConvertButton: React.FC = () => {
     formData.append("image", inputImage);
     formData.append("rows", rows);
     formData.append("cols", cols);
+    formData.append("isPortrait", (imageHeight > imageWidth).toString());
 
     const response = await axios.put(
       process.env.REACT_APP_BACKEND_URL!,

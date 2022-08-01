@@ -1,9 +1,10 @@
 import { Box, Center, Input, Button } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useAtom } from "jotai";
 import {
   errorCodeAtom,
   inputImageAtom,
+  inputImageSize,
   numTiles,
   originalImage,
 } from "../atoms";
@@ -15,7 +16,7 @@ const ImageInput: React.FC = () => {
   const [image, setImage] = useAtom(originalImage);
   const [, setinputImageAtom] = useAtom(inputImageAtom);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imageSize, setImageSize] = useState([0, 0]);
+  const [imageSize, setImageSize] = useAtom(inputImageSize);
 
   const [, setErrorCode] = useAtom(errorCodeAtom);
   const [[rows, cols]] = useAtom(numTiles);
