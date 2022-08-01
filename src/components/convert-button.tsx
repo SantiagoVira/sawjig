@@ -14,7 +14,7 @@ const ConvertButton: React.FC = () => {
 
   const isDisabled = inputImage === "" || errorCode !== 0 || isLoading;
   const content = [
-    "Jigsaw!",
+    "Sawjig!",
     "Upload your own image to try it out!",
     "You gotta have some rows!",
     "You gotta have some columns!",
@@ -64,7 +64,7 @@ const ConvertButton: React.FC = () => {
             </Flex>
           ) : (
             <Flex gap="0.5rem">
-              Jigsaw!
+              Sawjig!
               {isLoading ? (
                 <Spinner size="md" />
               ) : (

@@ -6,7 +6,7 @@ const DownloadButton: React.FC = () => {
   const [link] = useAtom(displayImage);
 
   return (
-    <a href={link} download="Jigsaw.png">
+    <a href={link} download="Sawjig.png">
       <Text
         p="0.5rem 0.8rem"
         bg="pink.500"

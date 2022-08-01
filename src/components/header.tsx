@@ -8,10 +8,10 @@ const Header: React.FC = () => {
       <Image
         src="/logo.png"
         boxSize={isMobile ? "4.7rem" : "5rem"}
-        alt="jigsaw-logo"
+        alt="sawjig-logo"
       />
       <Stack gap="0">
-        <Heading fontSize={isMobile ? "2.5rem" : "3rem"}>Jigsaw</Heading>
+        <Heading fontSize={isMobile ? "2.5rem" : "3rem"}>Sawjig</Heading>
         <Text
           m="0 !important"
           color="bg.500"
