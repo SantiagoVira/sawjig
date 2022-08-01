@@ -10,7 +10,7 @@ const ImageDisplay: React.FC = () => {
       src={source}
       alt="cut-up-image"
       borderRadius="16px"
-      aria-orientation="horizontal"
+      aria-orientation="vertical"
     />
   );
 };
