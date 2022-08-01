@@ -4,7 +4,15 @@ import StyledImage from "./image";
 
 const ImageDisplay: React.FC = () => {
   const [source] = useAtom(displayImage);
-  return <StyledImage src={source} alt="cut-up-image" borderRadius="16px" />;
+
+  return (
+    <StyledImage
+      src={source}
+      alt="cut-up-image"
+      borderRadius="16px"
+      aria-orientation="horizontal"
+    />
+  );
 };
 
 export default ImageDisplay;

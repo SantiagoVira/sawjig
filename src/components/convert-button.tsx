@@ -32,8 +32,8 @@ const ConvertButton: React.FC = () => {
   const convert = async () => {
     const formData = new FormData();
     formData.append("image", inputImage);
-    formData.append("rows", rows.toString());
-    formData.append("cols", cols.toString());
+    formData.append("rows", rows);
+    formData.append("cols", cols);
 
     const response = await axios.put(
       process.env.REACT_APP_BACKEND_URL!,
