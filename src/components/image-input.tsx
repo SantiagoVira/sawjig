@@ -11,6 +11,7 @@ import {
 import Grid from "./grid";
 import { useIsMobile } from "../hooks/useIsMobile";
 import StyledImage from "./image";
+import { useConvert } from "../hooks/convert";
 
 const ImageInput: React.FC = () => {
   const [image, setImage] = useAtom(originalImage);
@@ -21,6 +22,7 @@ const ImageInput: React.FC = () => {
   const [, setErrorCode] = useAtom(errorCodeAtom);
   const [[rows, cols]] = useAtom(numTiles);
   const isMobile = useIsMobile();
+  const convert = useConvert();
 
   return (
     <>
@@ -70,12 +72,14 @@ const ImageInput: React.FC = () => {
               src={image}
               alt="selected-image"
               borderRadius="16px"
-              onLoad={(data: React.BaseSyntheticEvent) =>
+              onLoad={(data: React.BaseSyntheticEvent) => {
                 setImageSize([
                   data.target.offsetWidth,
                   data.target.offsetHeight,
-                ])
-              }
+                ]);
+
+                convert();
+              }}
             />
           </Grid>
 
