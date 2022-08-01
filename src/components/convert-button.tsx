@@ -36,7 +36,7 @@ const ConvertButton: React.FC = () => {
     formData.append("image", inputImage);
     formData.append("rows", rows);
     formData.append("cols", cols);
-    formData.append("isPortrait", (imageHeight > imageWidth).toString());
+    formData.append("isPortrait", imageHeight > imageWidth ? "isPortrait" : "");
 
     const response = await axios.put(
       process.env.REACT_APP_BACKEND_URL!,
