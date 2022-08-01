@@ -6,3 +6,4 @@ export const inputImageAtom = atom<string | Blob>("");
 export const inputImageSize = atom<number[]>([0, 0]);
 export const numTiles = atom<string[]>(["2", "2"]);
 export const errorCodeAtom = atom<number>(1);
+export const isLoadingImage = atom<boolean>(false);

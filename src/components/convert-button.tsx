@@ -1,5 +1,5 @@
 import { ArrowDownIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Button, Flex, Tooltip } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Tooltip } from "@chakra-ui/react";
 import axios from "axios";
 import { useAtom } from "jotai";
 import {
@@ -8,6 +8,7 @@ import {
   errorCodeAtom,
   numTiles,
   inputImageSize,
+  isLoadingImage,
 } from "../atoms";
 import { useIsMobile } from "../hooks/useIsMobile";
 
@@ -17,10 +18,11 @@ const ConvertButton: React.FC = () => {
   const [, setDisplay] = useAtom(displayImage);
   const [[rows, cols]] = useAtom(numTiles);
   const [[imageWidth, imageHeight]] = useAtom(inputImageSize);
+  const [isLoading, setIsLoading] = useAtom(isLoadingImage);
 
   const isMobile = useIsMobile();
 
-  const isDisabled = inputImage === "" || errorCode !== 0;
+  const isDisabled = inputImage === "" || errorCode !== 0 || isLoading;
   const content = [
     "Jigsaw!",
     "Upload your own image to try it out!",
@@ -32,6 +34,7 @@ const ConvertButton: React.FC = () => {
   const label = content[errorCode];
 
   const convert = async () => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("image", inputImage);
     formData.append("rows", rows);
@@ -49,6 +52,7 @@ const ConvertButton: React.FC = () => {
       }
     );
     setDisplay(URL.createObjectURL(response.data));
+    setIsLoading(false);
   };
   return (
     <Flex
@@ -67,26 +71,35 @@ const ConvertButton: React.FC = () => {
         p="0.6rem"
         isDisabled={isMobile || errorCode === 0}>
         <Button
-          onClick={
-            isDisabled ? () => console.log("Unable to Convert Image") : convert
-          }
-          backgroundColor={isDisabled ? "bg.800" : "pink.500"}
+          disabled={isDisabled}
+          onClick={convert}
+          backgroundColor="pink.500"
           _hover={{
-            bgColor: isDisabled ? "bg.800" : "pink.600",
+            bgColor: "pink.600",
           }}
           _active={{
-            bgColor: isDisabled ? "bg.800" : "pink.700",
+            bgColor: "pink.700",
           }}
-          aria-label="arrow-icon"
+          aria-label="convert-button"
           w="100%">
           {isMobile ? (
             <Flex gap="0.5rem">
-              {errorCode === 0 && <ArrowDownIcon boxSize={5} />} {label}
+              {errorCode === 0 &&
+                (isLoading ? (
+                  <Spinner size="md" />
+                ) : (
+                  <ArrowDownIcon boxSize={6} />
+                ))}{" "}
+              {label}
             </Flex>
           ) : (
             <Flex gap="0.5rem">
               Jigsaw!
-              <ArrowForwardIcon boxSize={5} />
+              {isLoading ? (
+                <Spinner size="md" />
+              ) : (
+                <ArrowForwardIcon boxSize={6} />
+              )}
             </Flex>
           )}
         </Button>
