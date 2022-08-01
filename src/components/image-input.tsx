@@ -33,7 +33,11 @@ const ImageInput: React.FC = () => {
         style={{ display: "none" }}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           if (e.target.files && e.target.files[0]) {
-            if (e.target.files[0]["type"].split("/")[0] !== "image") {
+            const imType = e.target.files[0]["type"];
+            if (
+              imType.split("/")[0] !== "image" ||
+              imType.split("/")[1] === "gif"
+            ) {
               return;
             } // not image
             setImage(URL.createObjectURL(e.target.files[0])); // Blob
