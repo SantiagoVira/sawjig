@@ -7,6 +7,7 @@ const StyledImage: React.FC<ImageProps> = (props) => {
       maxW={{ base: "calc(0.9 * 100vw)", md: "450px" }}
       maxH={{ base: "calc(0.9 * 100vw)", md: "450px" }}
       borderRadius="16px"
+      imageOrientation="from-image"
       {...props}
     />
   );
