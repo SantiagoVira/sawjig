@@ -78,7 +78,9 @@ const ImageInput: React.FC = () => {
                   data.target.offsetHeight,
                 ]);
 
-                convert();
+                if (image !== "/logo/gradient.png") {
+                  convert();
+                }
               }}
             />
           </Grid>
