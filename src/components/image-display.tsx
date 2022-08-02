@@ -1,11 +1,17 @@
 import { useAtom } from "jotai";
-import { displayImage } from "../atoms";
+import { displayImageBlobAtom } from "../atoms";
 import StyledImage from "./image";
 
 const ImageDisplay: React.FC = () => {
-  const [source] = useAtom(displayImage);
+  const [displayImageBlob] = useAtom(displayImageBlobAtom);
 
-  return <StyledImage src={source} alt="cut-up-image" borderRadius="16px" />;
+  return (
+    <StyledImage
+      src={displayImageBlob}
+      alt="cut-up-image"
+      borderRadius="16px"
+    />
+  );
 };
 
 export default ImageDisplay;

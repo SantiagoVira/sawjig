@@ -2,8 +2,8 @@ import { useAtom } from "jotai";
 import { useCallback, useEffect, useRef } from "react";
 import {
   errorCodeAtom,
-  inputImageSize,
-  // numTiles,
+  inputImageNaturalSizeAtom,
+  // gridSizeAtom,
   // originalImageFileAtom,
 } from "../atoms";
 
@@ -28,22 +28,27 @@ export const useErrorCode = () => {
 
 export const useCheckError = () => {
   const [, setErrorCode] = useAtom(errorCodeAtom);
-  // const [[rows, cols]] = useAtom(numTiles);
+  // const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
   // const [originalImageFile] = useAtom(originalImageFileAtom);
-  const [[width, height]] = useAtom(inputImageSize);
-  const stuff = useRef({ width, height });
+  const [[inputImageWidth, inputImageHeight]] = useAtom(
+    inputImageNaturalSizeAtom
+  );
+  const stuff = useRef({ inputImageWidth, inputImageHeight });
 
-  stuff.current = { width, height };
+  stuff.current = { inputImageWidth, inputImageHeight };
 
-  useEffect(() => console.log("useEffect", [width, height]), [width, height]);
+  useEffect(
+    () => console.log("useEffect", [inputImageWidth, inputImageHeight]),
+    [inputImageWidth, inputImageHeight]
+  );
 
   return useCallback(() => {
     return () => {
       // if (originalImageFile === "") setErrorCode(1);
-      // else if (rows === "" || parseInt(rows) < 1) setErrorCode(2);
-      // else if (cols === "" || parseInt(cols) < 1) setErrorCode(3);
-      // else if (parseInt(rows) > 50) setErrorCode(4);
-      // else if (parseInt(cols) > 50) setErrorCode(5);
+      // else if (gridRows === "" || parseInt(gridRows) < 1) setErrorCode(2);
+      // else if (gridCols === "" || parseInt(gridCols) < 1) setErrorCode(3);
+      // else if (parseInt(gridRows) > 50) setErrorCode(4);
+      // else if (parseInt(gridCols) > 50) setErrorCode(5);
       // else if (stuff.current.width < 300 || stuff.current.height < 300)
       //   setErrorCode(6);
       // else setErrorCode(0);

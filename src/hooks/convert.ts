@@ -1,27 +1,30 @@
 import axios from "axios";
 import { useAtom } from "jotai";
 import {
-  displayImage,
+  displayImageBlobAtom,
   originalImageFileAtom,
-  inputImageSize,
-  isLoadingImage,
-  numTiles,
+  inputImageSizeAtom,
+  isLoadingImageAtom,
+  gridSizeAtom,
 } from "../atoms";
 
 export const useConvert = () => {
   const [originalImageFile] = useAtom(originalImageFileAtom);
-  const [, setDisplay] = useAtom(displayImage);
-  const [[rows, cols]] = useAtom(numTiles);
-  const [[imageWidth, imageHeight]] = useAtom(inputImageSize);
-  const [, setIsLoading] = useAtom(isLoadingImage);
+  const [, setDisplayImageBlob] = useAtom(displayImageBlobAtom);
+  const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
+  const [[inputImageWidth, inputImageHeight]] = useAtom(inputImageSizeAtom);
+  const [, setIsLoadingImage] = useAtom(isLoadingImageAtom);
 
   const convert = async () => {
-    setIsLoading(true);
+    setIsLoadingImage(true);
     const formData = new FormData();
     formData.append("image", originalImageFile);
-    formData.append("rows", rows);
-    formData.append("cols", cols);
-    formData.append("isPortrait", imageHeight > imageWidth ? "isPortrait" : "");
+    formData.append("rows", gridRows);
+    formData.append("cols", gridCols);
+    formData.append(
+      "isPortrait",
+      inputImageHeight > inputImageWidth ? "isPortrait" : ""
+    );
 
     const response = await axios.put(
       process.env.REACT_APP_BACKEND_URL!,
@@ -33,8 +36,8 @@ export const useConvert = () => {
         responseType: "blob",
       }
     );
-    setDisplay(URL.createObjectURL(response.data));
-    setIsLoading(false);
+    setDisplayImageBlob(URL.createObjectURL(response.data));
+    setIsLoadingImage(false);
   };
 
   return convert;

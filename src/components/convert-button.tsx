@@ -1,21 +1,22 @@
 import { ArrowDownIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Button, Flex, Spinner, Tooltip } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import { originalImageFileAtom, isLoadingImage } from "../atoms";
+import { originalImageFileAtom, isLoadingImageAtom } from "../atoms";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useConvert } from "../hooks/convert";
 import { useErrorCode } from "../hooks/useErrorCode";
 
 const ConvertButton: React.FC = () => {
   const [originalImageFile] = useAtom(originalImageFileAtom);
-  const [isLoading] = useAtom(isLoadingImage);
+  const [isLoadingImage] = useAtom(isLoadingImageAtom);
 
   const isMobile = useIsMobile();
 
   const { errorCode, errorMessage } = useErrorCode();
   const convert = useConvert();
 
-  const isDisabled = originalImageFile === "" || errorCode !== 0 || isLoading;
+  const isDisabled =
+    originalImageFile === "" || errorCode !== 0 || isLoadingImage;
 
   return (
     <Flex
@@ -48,7 +49,7 @@ const ConvertButton: React.FC = () => {
           {isMobile ? (
             <Flex gap="0.5rem">
               {errorCode === 0 &&
-                (isLoading ? (
+                (isLoadingImage ? (
                   <Spinner size="md" />
                 ) : (
                   <ArrowDownIcon boxSize={6} />
@@ -58,7 +59,7 @@ const ConvertButton: React.FC = () => {
           ) : (
             <Flex gap="0.5rem">
               Sawjig!
-              {isLoading ? (
+              {isLoadingImage ? (
                 <Spinner size="md" />
               ) : (
                 <ArrowForwardIcon boxSize={6} />

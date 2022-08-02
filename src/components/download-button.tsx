@@ -1,12 +1,12 @@
 import { Text } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import { displayImage } from "../atoms";
+import { displayImageBlobAtom } from "../atoms";
 
 const DownloadButton: React.FC = () => {
-  const [link] = useAtom(displayImage);
+  const [displayImageBlob] = useAtom(displayImageBlobAtom);
 
   return (
-    <a href={link} download="Sawjig.png">
+    <a href={displayImageBlob} download="Sawjig.png">
       <Text
         p="0.5rem 0.8rem"
         bg="pink.500"

@@ -3,8 +3,8 @@ import React, { useRef, useState } from "react";
 import { useAtom } from "jotai";
 import {
   originalImageFileAtom,
-  inputImageSize,
-  inputImageNaturalSize,
+  inputImageSizeAtom,
+  inputImageNaturalSizeAtom,
 } from "../atoms";
 import Grid from "./grid";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -15,8 +15,8 @@ import { useCheckError, useErrorCode } from "../hooks/useErrorCode";
 
 const ImageInput: React.FC = () => {
   const [, setOriginalImageFile] = useAtom(originalImageFileAtom);
-  const [imageSize, setImageSize] = useAtom(inputImageSize);
-  const [, setImageNaturalSize] = useAtom(inputImageNaturalSize);
+  const [inputImageSize, setInputImageSize] = useAtom(inputImageSizeAtom);
+  const [, setInputImageNaturalSize] = useAtom(inputImageNaturalSizeAtom);
 
   const [inputBlob, setInputBlob] = useState<string>("/logo/gradient.png");
 
@@ -70,7 +70,7 @@ const ImageInput: React.FC = () => {
               opacity: 1,
             },
           }}>
-          <Grid w={imageSize[0]} h={imageSize[1]} key={`${isMobile}`}>
+          <Grid w={inputImageSize[0]} h={inputImageSize[1]} key={`${isMobile}`}>
             <StyledImage
               src={inputBlob}
               alt="selected-image"
@@ -78,11 +78,11 @@ const ImageInput: React.FC = () => {
               onLoad={(
                 data: React.BaseSyntheticEvent<any, any, HTMLImageElement>
               ) => {
-                setImageNaturalSize([
+                setInputImageNaturalSize([
                   data.target.naturalWidth,
                   data.target.naturalHeight,
                 ]);
-                setImageSize([data.target.width, data.target.height]);
+                setInputImageSize([data.target.width, data.target.height]);
                 checkErrors();
                 checkErrors();
                 checkErrors();

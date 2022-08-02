@@ -1,6 +1,6 @@
 import { Center, Divider, HStack, VStack } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import { numTiles } from "../atoms";
+import { gridSizeAtom } from "../atoms";
 
 const arraySizeN = (n: string) => {
   const num = parseInt(n);
@@ -11,7 +11,7 @@ const arraySizeN = (n: string) => {
 const Grid: React.FC<
   React.PropsWithChildren<{ w: number | undefined; h: number | undefined }>
 > = ({ w, h, children }) => {
-  const [[rows, cols]] = useAtom(numTiles);
+  const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
 
   return (
     <Center>
@@ -23,7 +23,7 @@ const Grid: React.FC<
         justifyContent="space-evenly"
         borderRadius="16px"
         overflow="hidden">
-        {arraySizeN(rows).map((e, i) => (
+        {arraySizeN(gridRows).map((e, i) => (
           <Divider
             orientation="horizontal"
             key={`h-${i}`}
@@ -40,7 +40,7 @@ const Grid: React.FC<
         justifyContent="space-evenly"
         borderRadius="16px"
         overflow="hidden">
-        {arraySizeN(cols).map((e, i) => (
+        {arraySizeN(gridCols).map((e, i) => (
           <Divider
             orientation="vertical"
             key={`v-${i}`}
