@@ -1,4 +1,4 @@
-import { HStack, Input } from "@chakra-ui/react";
+import { HStack, Input, Text } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 import { gridSizeAtom } from "../atoms";
 import { useCheckError, useErrorCode } from "../hooks/useErrorCode";
@@ -9,7 +9,7 @@ const SizeInput: React.FC = () => {
   const checkErrors = useCheckError();
 
   return (
-    <HStack alignItems="center" gap="0.5rem">
+    <HStack alignItems="center" gap="0.3rem">
       <Input
         type="number"
         borderColor={errorCode === 4 || errorCode === 2 ? "tomato" : "bg.500"}
@@ -22,7 +22,8 @@ const SizeInput: React.FC = () => {
           checkErrors();
         }}
         w="5rem"
-      />
+      />{" "}
+      <Text>X</Text>
       <Input
         type="number"
         borderColor={errorCode === 5 || errorCode === 3 ? "tomato" : "bg.500"}
