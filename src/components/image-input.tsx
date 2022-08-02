@@ -15,7 +15,7 @@ import { useCheckError, useErrorCode } from "../hooks/useErrorCode";
 
 const ImageInput: React.FC = () => {
   const [, setOriginalImageFile] = useAtom(originalImageFileAtom);
-  const [inputImageSize, setInputImageSize] = useAtom(inputImageSizeAtom);
+  const [, setInputImageSize] = useAtom(inputImageSizeAtom);
   const [, setInputImageNaturalSize] = useAtom(inputImageNaturalSizeAtom);
 
   const [inputBlob, setInputBlob] = useState<string>("/logo/gradient.png");
@@ -70,7 +70,7 @@ const ImageInput: React.FC = () => {
               opacity: 1,
             },
           }}>
-          <Grid w={inputImageSize[0]} h={inputImageSize[1]} key={`${isMobile}`}>
+          <Grid key={`${isMobile}`}>
             <StyledImage
               src={inputBlob}
               alt="selected-image"

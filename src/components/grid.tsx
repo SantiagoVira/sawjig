@@ -1,6 +1,7 @@
 import { Center, Divider, HStack, VStack } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import { gridSizeAtom } from "../atoms";
+import { gridSizeAtom, inputImageSizeAtom } from "../atoms";
+import { maxImageSize } from "./image";
 
 const arraySizeN = (n: string) => {
   const num = parseInt(n);
@@ -8,17 +9,18 @@ const arraySizeN = (n: string) => {
   return [...Array(size)];
 };
 
-const Grid: React.FC<
-  React.PropsWithChildren<{ w: number | undefined; h: number | undefined }>
-> = ({ w, h, children }) => {
+const Grid: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
+  const [[inputImageWidth, inputImageHeight]] = useAtom(inputImageSizeAtom);
 
   return (
     <Center>
       <VStack
         position="absolute"
-        w={w || "0"}
-        h={h || "0"}
+        w={inputImageWidth || "0"}
+        h={inputImageHeight || "0"}
+        maxW={maxImageSize}
+        maxH={maxImageSize}
         alignItems="center"
         justifyContent="space-evenly"
         borderRadius="16px"
@@ -34,8 +36,10 @@ const Grid: React.FC<
       </VStack>
       <HStack
         position="absolute"
-        w={w || "0"}
-        h={h || "0"}
+        w={inputImageWidth || "0"}
+        h={inputImageHeight || "0"}
+        maxW={maxImageSize}
+        maxH={maxImageSize}
         alignItems="center"
         justifyContent="space-evenly"
         borderRadius="16px"
