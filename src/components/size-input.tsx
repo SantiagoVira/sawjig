@@ -1,6 +1,7 @@
 import { HStack, Input, Text } from "@chakra-ui/react";
 import { SetStateAction, useAtom } from "jotai";
-import { numTiles, errorCodeAtom, inputImageAtom } from "../atoms";
+import { numTiles } from "../atoms";
+import { useCheckError, useErrorCode } from "../hooks/useErrorCode";
 
 const StyledInput: React.FC<{
   val: string[];
@@ -9,8 +10,7 @@ const StyledInput: React.FC<{
   name: string;
   error: boolean;
 }> = ({ val, setVal, updateIndex, name, error }) => {
-  const [, setErrorCode] = useAtom(errorCodeAtom);
-  const [inputImage] = useAtom(inputImageAtom);
+  const checkErrors = useCheckError();
 
   return (
     <Input
@@ -25,12 +25,7 @@ const StyledInput: React.FC<{
         const cols = updateIndex === 0 ? val[1] : e.target.value;
         setVal([rows, cols]);
 
-        setErrorCode(0);
-        setErrorCode((code) => (parseInt(cols) > 50 ? 5 : code));
-        setErrorCode((code) => (parseInt(rows) > 50 ? 4 : code));
-        setErrorCode((code) => (cols === "" || parseInt(cols) < 1 ? 3 : code));
-        setErrorCode((code) => (rows === "" || parseInt(rows) < 1 ? 2 : code));
-        setErrorCode((code) => (inputImage === "" ? 1 : code));
+        checkErrors();
       }}
       w="5rem"
     />
@@ -39,7 +34,8 @@ const StyledInput: React.FC<{
 
 const SizeInput: React.FC = () => {
   const [tiles, setTiles] = useAtom(numTiles);
-  const [errorCode] = useAtom(errorCodeAtom);
+  const { errorCode } = useErrorCode();
+
   return (
     <HStack alignItems="center" gap="0.5rem">
       <StyledInput

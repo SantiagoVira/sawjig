@@ -1,29 +1,22 @@
 import { ArrowDownIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Button, Flex, Spinner, Tooltip } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import { inputImageAtom, errorCodeAtom, isLoadingImage } from "../atoms";
+import { originalImageFileAtom, isLoadingImage } from "../atoms";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useConvert } from "../hooks/convert";
+import { useErrorCode } from "../hooks/useErrorCode";
 
 const ConvertButton: React.FC = () => {
-  const [inputImage] = useAtom(inputImageAtom);
-  const [errorCode] = useAtom(errorCodeAtom);
+  const [originalImageFile] = useAtom(originalImageFileAtom);
   const [isLoading] = useAtom(isLoadingImage);
 
   const isMobile = useIsMobile();
 
-  const isDisabled = inputImage === "" || errorCode !== 0 || isLoading;
-  const content = [
-    "Sawjig!",
-    "Upload your own image to try it out!",
-    "You gotta have some rows!",
-    "You gotta have some columns!",
-    "You gotta have at most 50 rows!",
-    "You gotta have at most 50 columns!",
-  ];
-  const label = content[errorCode];
-
+  const { errorCode, errorMessage } = useErrorCode();
   const convert = useConvert();
+
+  const isDisabled = originalImageFile === "" || errorCode !== 0 || isLoading;
+
   return (
     <Flex
       flexDirection="column"
@@ -31,7 +24,7 @@ const ConvertButton: React.FC = () => {
       gap="1rem"
       w={isMobile ? "90%" : "fit-content"}>
       <Tooltip
-        label={label}
+        label={errorMessage}
         closeDelay={200}
         shouldWrapChildren
         borderColor="bg.500 !important"
@@ -60,7 +53,7 @@ const ConvertButton: React.FC = () => {
                 ) : (
                   <ArrowDownIcon boxSize={6} />
                 ))}{" "}
-              {label}
+              {errorMessage}
             </Flex>
           ) : (
             <Flex gap="0.5rem">

@@ -1,28 +1,35 @@
 import { Box, Center, Input, Button } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useAtom } from "jotai";
 import {
-  errorCodeAtom,
-  inputImageAtom,
+  originalImageFileAtom,
   inputImageSize,
-  numTiles,
-  originalImage,
+  inputImageNaturalSize,
 } from "../atoms";
 import Grid from "./grid";
 import { useIsMobile } from "../hooks/useIsMobile";
 import StyledImage from "./image";
 import { useConvert } from "../hooks/convert";
+import { useErrorToast } from "../hooks/useErrorToast";
+import { useCheckError, useErrorCode } from "../hooks/useErrorCode";
 
 const ImageInput: React.FC = () => {
-  const [image, setImage] = useAtom(originalImage);
-  const [, setinputImageAtom] = useAtom(inputImageAtom);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [, setOriginalImageFile] = useAtom(originalImageFileAtom);
   const [imageSize, setImageSize] = useAtom(inputImageSize);
+  const [, setImageNaturalSize] = useAtom(inputImageNaturalSize);
 
-  const [, setErrorCode] = useAtom(errorCodeAtom);
-  const [[rows, cols]] = useAtom(numTiles);
+  const [inputBlob, setInputBlob] = useState<string>("/logo/gradient.png");
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const isMobile = useIsMobile();
   const convert = useConvert();
+
+  // Errors
+  const { errorCode } = useErrorCode();
+  const checkErrors = useCheckError();
+  const gifError = useErrorToast("Image cannot be a gif (yet)");
+  const nonImageError = useErrorToast("You gotta use an image!");
 
   return (
     <>
@@ -37,24 +44,20 @@ const ImageInput: React.FC = () => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           if (e.target.files && e.target.files[0]) {
             const imType = e.target.files[0]["type"];
-            if (
-              imType.split("/")[0] !== "image" ||
-              imType.split("/")[1] === "gif"
-            ) {
-              return;
-            } // not image
-            setImage(URL.createObjectURL(e.target.files[0])); // Blob
-            setinputImageAtom(e.target.files[0]); // File
+            if (imType.split("/")[0] !== "image") {
+              nonImageError();
+            } else if (imType.split("/")[1] === "gif") {
+              gifError();
+            } else {
+              setInputBlob(URL.createObjectURL(e.target.files[0]));
+              setOriginalImageFile(e.target.files[0]);
 
-            setErrorCode(0);
-            setErrorCode((code) => (parseInt(cols) > 50 ? 5 : code));
-            setErrorCode((code) => (parseInt(rows) > 50 ? 4 : code));
-            setErrorCode((code) =>
-              cols === "" || parseInt(cols) < 1 ? 3 : code
-            );
-            setErrorCode((code) =>
-              rows === "" || parseInt(rows) < 1 ? 2 : code
-            );
+              checkErrors();
+              checkErrors();
+              checkErrors();
+              checkErrors();
+              checkErrors();
+            }
           }
         }}
       />
@@ -69,16 +72,24 @@ const ImageInput: React.FC = () => {
           }}>
           <Grid w={imageSize[0]} h={imageSize[1]} key={`${isMobile}`}>
             <StyledImage
-              src={image}
+              src={inputBlob}
               alt="selected-image"
               borderRadius="16px"
-              onLoad={(data: React.BaseSyntheticEvent) => {
-                setImageSize([
-                  data.target.offsetWidth,
-                  data.target.offsetHeight,
+              onLoad={(
+                data: React.BaseSyntheticEvent<any, any, HTMLImageElement>
+              ) => {
+                setImageNaturalSize([
+                  data.target.naturalWidth,
+                  data.target.naturalHeight,
                 ]);
+                setImageSize([data.target.width, data.target.height]);
+                checkErrors();
+                checkErrors();
+                checkErrors();
+                checkErrors();
+                checkErrors();
 
-                if (image !== "/logo/gradient.png") {
+                if (inputBlob !== "/logo/gradient.png" && errorCode === 0) {
                   convert();
                 }
               }}
