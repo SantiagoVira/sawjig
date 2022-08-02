@@ -18,7 +18,7 @@ const ImageInput: React.FC = () => {
   const [, setInputImageSize] = useAtom(inputImageSizeAtom);
   const [, setInputImageNaturalSize] = useAtom(inputImageNaturalSizeAtom);
 
-  const [inputBlob, setInputBlob] = useState<string>("/logo/gradient.png");
+  const [inputBlob, setInputBlob] = useState<string>("/gradient.png");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -89,7 +89,7 @@ const ImageInput: React.FC = () => {
                 checkErrors();
                 checkErrors();
 
-                if (inputBlob !== "/logo/gradient.png" && errorCode === 0) {
+                if (inputBlob !== "/gradient.png" && errorCode === 0) {
                   convert();
                 }
               }}
