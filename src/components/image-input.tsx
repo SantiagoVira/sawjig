@@ -20,7 +20,7 @@ const ImageInput: React.FC = () => {
   const [, setInputImageNaturalSize] = useAtom(inputImageNaturalSizeAtom);
   const [isLoadingImage] = useAtom(isLoadingImageAtom);
 
-  const [inputBlob, setInputBlob] = useState<string>("/gradient.png");
+  const [inputBlob, setInputBlob] = useState<string>("/sawjig_default.png");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -86,7 +86,7 @@ const ImageInput: React.FC = () => {
                   inputImageHeight: data.target.naturalHeight,
                 });
 
-                if (inputBlob !== "/gradient.png" && errorCode === 0) {
+                if (inputBlob !== "/sawjig_default.png" && errorCode === 0) {
                   convert({
                     inputImageWidth: data.target.naturalWidth,
                     inputImageHeight: data.target.naturalHeight,
