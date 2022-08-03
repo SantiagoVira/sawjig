@@ -3,16 +3,18 @@ import { useAtom } from "jotai";
 import {
   displayImageBlobAtom,
   inputImageFileAtom,
-  inputImageSizeAtom,
   isLoadingImageAtom,
   gridSizeAtom,
+  inputImageNaturalSizeAtom,
 } from "../atoms";
 
 export const useConvert = () => {
   const [inputImageFile] = useAtom(inputImageFileAtom);
   const [, setDisplayImageBlob] = useAtom(displayImageBlobAtom);
   const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
-  const [[inputImageWidth, inputImageHeight]] = useAtom(inputImageSizeAtom);
+  const [[inputImageWidth, inputImageHeight]] = useAtom(
+    inputImageNaturalSizeAtom
+  );
   const [, setIsLoadingImage] = useAtom(isLoadingImageAtom);
 
   const convert = async (data?: {
@@ -20,15 +22,16 @@ export const useConvert = () => {
     inputImageHeight?: number;
   }) => {
     setIsLoadingImage(true);
-    const isPortrait =
-      (data?.inputImageHeight ?? inputImageHeight) >
-      (data?.inputImageWidth ?? inputImageWidth);
+    const imgWidth = (data?.inputImageWidth ?? inputImageWidth).toString();
+    const imgHeight = (data?.inputImageHeight ?? inputImageHeight).toString();
 
     const formData = new FormData();
     formData.append("image", inputImageFile);
     formData.append("rows", gridRows);
     formData.append("cols", gridCols);
-    formData.append("isPortrait", isPortrait ? "isPortrait" : "");
+    formData.append("width", imgWidth);
+    formData.append("height", imgHeight);
+    //formData.append("isPortrait", isPortrait ? "isPortrait" : "");
 
     const response = await axios.put(
       process.env.REACT_APP_BACKEND_URL!,
