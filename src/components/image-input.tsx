@@ -87,7 +87,10 @@ const ImageInput: React.FC = () => {
                 });
 
                 if (inputBlob !== "/gradient.png" && errorCode === 0) {
-                  convert();
+                  convert({
+                    inputImageWidth: data.target.naturalWidth,
+                    inputImageHeight: data.target.naturalHeight,
+                  });
                 }
               }}
             />

@@ -35,7 +35,7 @@ const ConvertButton: React.FC = () => {
         isDisabled={isMobile || errorCode === 0}>
         <Button
           disabled={isDisabled}
-          onClick={convert}
+          onClick={() => convert()}
           backgroundColor="pink.500"
           _hover={{
             bgColor: "pink.600",

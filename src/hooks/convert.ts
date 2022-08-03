@@ -15,16 +15,20 @@ export const useConvert = () => {
   const [[inputImageWidth, inputImageHeight]] = useAtom(inputImageSizeAtom);
   const [, setIsLoadingImage] = useAtom(isLoadingImageAtom);
 
-  const convert = async () => {
+  const convert = async (data?: {
+    inputImageWidth?: number;
+    inputImageHeight?: number;
+  }) => {
     setIsLoadingImage(true);
+    const isPortrait =
+      (data?.inputImageHeight ?? inputImageHeight) >
+      (data?.inputImageWidth ?? inputImageWidth);
+
     const formData = new FormData();
     formData.append("image", inputImageFile);
     formData.append("rows", gridRows);
     formData.append("cols", gridCols);
-    formData.append(
-      "isPortrait",
-      inputImageHeight > inputImageWidth ? "isPortrait" : ""
-    );
+    formData.append("isPortrait", isPortrait ? "isPortrait" : "");
 
     const response = await axios.put(
       process.env.REACT_APP_BACKEND_URL!,
