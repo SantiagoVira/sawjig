@@ -13,6 +13,7 @@ import StyledImage from "./image";
 import { useConvert } from "../hooks/convert";
 import { useErrorToast } from "../hooks/useErrorToast";
 import { useCheckError } from "../hooks/useErrorCode";
+import { useWarningToast } from "../hooks/useWarningToast";
 
 const ImageInput: React.FC = () => {
   const [inputImageFile, setInputImageFile] = useAtom(inputImageFileAtom);
@@ -29,8 +30,8 @@ const ImageInput: React.FC = () => {
 
   // Errors
   const checkErrors = useCheckError();
-  const gifError = useErrorToast("Image cannot be a gif (yet)");
-  const nonImageError = useErrorToast("You gotta use an image!");
+  const errorToast = useErrorToast();
+  const warningToast = useWarningToast();
 
   return (
     <>
@@ -47,10 +48,12 @@ const ImageInput: React.FC = () => {
           if (e.target.files && e.target.files[0]) {
             const imType = e.target.files[0]["type"];
             if (imType.split("/")[0] !== "image") {
-              nonImageError();
+              errorToast("You gotta use an image!");
             } else if (imType.split("/")[1] === "gif") {
-              gifError();
+              errorToast("Image cannot be a gif (yet)");
             } else {
+              if (e.target.files[0].size > 1400000)
+                warningToast("Bigger files may take longer to process");
               setInputBlob(URL.createObjectURL(e.target.files[0]));
               setInputImageFile(e.target.files[0]);
 

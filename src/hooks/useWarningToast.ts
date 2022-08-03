@@ -1,12 +1,12 @@
 import { useToast } from "@chakra-ui/react";
 
-export const useErrorToast = () => {
+export const useWarningToast = () => {
   const toast = useToast();
 
   return (title: string) =>
     toast({
       title: title,
-      status: "error",
+      status: "warning",
       isClosable: true,
     });
 };

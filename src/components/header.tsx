@@ -9,6 +9,7 @@ const Header: React.FC = () => {
         src="/logo.png"
         boxSize={isMobile ? "4.7rem" : "5rem"}
         alt="sawjig-logo"
+        borderRadius="8px"
       />
       <Stack gap="0">
         <Heading fontSize={isMobile ? "2.5rem" : "3rem"}>Sawjig</Heading>
