@@ -15,7 +15,7 @@ const ImageDisplay: React.FC = () => {
         alt="cut-up-image"
         borderRadius="16px"
       />
-      {true && (
+      {isIOS && (
         <Text
           borderColor="bg.500 !important"
           border="1px solid"
