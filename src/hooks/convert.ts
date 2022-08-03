@@ -2,14 +2,14 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import {
   displayImageBlobAtom,
-  originalImageFileAtom,
+  inputImageFileAtom,
   inputImageSizeAtom,
   isLoadingImageAtom,
   gridSizeAtom,
 } from "../atoms";
 
 export const useConvert = () => {
-  const [originalImageFile] = useAtom(originalImageFileAtom);
+  const [inputImageFile] = useAtom(inputImageFileAtom);
   const [, setDisplayImageBlob] = useAtom(displayImageBlobAtom);
   const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
   const [[inputImageWidth, inputImageHeight]] = useAtom(inputImageSizeAtom);
@@ -18,7 +18,7 @@ export const useConvert = () => {
   const convert = async () => {
     setIsLoadingImage(true);
     const formData = new FormData();
-    formData.append("image", originalImageFile);
+    formData.append("image", inputImageFile);
     formData.append("rows", gridRows);
     formData.append("cols", gridCols);
     formData.append(

@@ -1,13 +1,13 @@
 import { ArrowDownIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Button, Flex, Spinner, Tooltip } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import { originalImageFileAtom, isLoadingImageAtom } from "../atoms";
+import { inputImageFileAtom, isLoadingImageAtom } from "../atoms";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useConvert } from "../hooks/convert";
 import { useErrorCode } from "../hooks/useErrorCode";
 
 const ConvertButton: React.FC = () => {
-  const [originalImageFile] = useAtom(originalImageFileAtom);
+  const [inputImageFile] = useAtom(inputImageFileAtom);
   const [isLoadingImage] = useAtom(isLoadingImageAtom);
 
   const isMobile = useIsMobile();
@@ -15,8 +15,7 @@ const ConvertButton: React.FC = () => {
   const { errorCode, errorMessage } = useErrorCode();
   const convert = useConvert();
 
-  const isDisabled =
-    originalImageFile === "" || errorCode !== 0 || isLoadingImage;
+  const isDisabled = inputImageFile === "" || errorCode !== 0 || isLoadingImage;
 
   return (
     <Flex

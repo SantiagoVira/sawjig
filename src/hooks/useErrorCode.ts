@@ -1,10 +1,10 @@
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useRef } from "react";
+
 import {
   errorCodeAtom,
   inputImageNaturalSizeAtom,
-  // gridSizeAtom,
-  // originalImageFileAtom,
+  gridSizeAtom,
+  inputImageFileAtom,
 } from "../atoms";
 
 export const useErrorCode = () => {
@@ -26,38 +26,44 @@ export const useErrorCode = () => {
   };
 };
 
+interface useCheckErrorProps {
+  gridRows?: string;
+  gridCols?: string;
+  inputImageFile?: string | File;
+  inputImageWidth?: number;
+  inputImageHeight?: number;
+}
+
 export const useCheckError = () => {
   const [, setErrorCode] = useAtom(errorCodeAtom);
-  // const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
-  // const [originalImageFile] = useAtom(originalImageFileAtom);
+  const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
+  const [inputImageFile] = useAtom(inputImageFileAtom);
   const [[inputImageWidth, inputImageHeight]] = useAtom(
     inputImageNaturalSizeAtom
   );
-  const stuff = useRef({ inputImageWidth, inputImageHeight });
 
-  stuff.current = { inputImageWidth, inputImageHeight };
+  return (data?: useCheckErrorProps) => {
+    let code = 0;
+    if ((data?.inputImageFile ?? inputImageFile) === "") code = 1;
+    else if (
+      (data?.gridRows ?? gridRows) === "" ||
+      parseInt(data?.gridRows ?? gridRows) < 1
+    )
+      code = 2;
+    else if (
+      (data?.gridCols ?? gridCols) === "" ||
+      parseInt(data?.gridCols ?? gridCols) < 1
+    )
+      code = 3;
+    else if (parseInt(data?.gridRows ?? gridRows) > 50) code = 4;
+    else if (parseInt(data?.gridCols ?? gridCols) > 50) code = 5;
+    else if (
+      (data?.inputImageWidth ?? inputImageWidth) < 300 ||
+      (data?.inputImageHeight ?? inputImageHeight) < 300
+    )
+      code = 6;
 
-  useEffect(
-    () => console.log("useEffect", [inputImageWidth, inputImageHeight]),
-    [inputImageWidth, inputImageHeight]
-  );
-
-  return useCallback(() => {
-    // if (originalImageFile === "") setErrorCode(1);
-    // else if (gridRows === "" || parseInt(gridRows) < 1) setErrorCode(2);
-    // else if (gridCols === "" || parseInt(gridCols) < 1) setErrorCode(3);
-    // else if (parseInt(gridRows) > 50) setErrorCode(4);
-    // else if (parseInt(gridCols) > 50) setErrorCode(5);
-    // else if (stuff.current.width < 300 || stuff.current.height < 300)
-    //   setErrorCode(6);
-    // else setErrorCode(0);
-    // console.log(
-    //   "useCallback",
-    //   stuff,
-    //   stuff.current,
-    //   stuff.current.width,
-    //   stuff.current.height
-    // );
-    setErrorCode(0);
-  }, [setErrorCode]);
+    setErrorCode(code);
+    return code;
+  };
 };

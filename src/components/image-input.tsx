@@ -2,7 +2,7 @@ import { Box, Center, Input, Button } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { useAtom } from "jotai";
 import {
-  originalImageFileAtom,
+  inputImageFileAtom,
   inputImageSizeAtom,
   inputImageNaturalSizeAtom,
   isLoadingImageAtom,
@@ -12,10 +12,10 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import StyledImage from "./image";
 import { useConvert } from "../hooks/convert";
 import { useErrorToast } from "../hooks/useErrorToast";
-import { useCheckError, useErrorCode } from "../hooks/useErrorCode";
+import { useCheckError } from "../hooks/useErrorCode";
 
 const ImageInput: React.FC = () => {
-  const [, setOriginalImageFile] = useAtom(originalImageFileAtom);
+  const [inputImageFile, setInputImageFile] = useAtom(inputImageFileAtom);
   const [, setInputImageSize] = useAtom(inputImageSizeAtom);
   const [, setInputImageNaturalSize] = useAtom(inputImageNaturalSizeAtom);
   const [isLoadingImage] = useAtom(isLoadingImageAtom);
@@ -28,7 +28,6 @@ const ImageInput: React.FC = () => {
   const convert = useConvert();
 
   // Errors
-  const { errorCode } = useErrorCode();
   const checkErrors = useCheckError();
   const gifError = useErrorToast("Image cannot be a gif (yet)");
   const nonImageError = useErrorToast("You gotta use an image!");
@@ -53,13 +52,9 @@ const ImageInput: React.FC = () => {
               gifError();
             } else {
               setInputBlob(URL.createObjectURL(e.target.files[0]));
-              setOriginalImageFile(e.target.files[0]);
+              setInputImageFile(e.target.files[0]);
 
-              checkErrors();
-              checkErrors();
-              checkErrors();
-              checkErrors();
-              checkErrors();
+              checkErrors({ inputImageFile: inputImageFile });
             }
           }
         }}
@@ -86,11 +81,10 @@ const ImageInput: React.FC = () => {
                   data.target.naturalHeight,
                 ]);
                 setInputImageSize([data.target.width, data.target.height]);
-                checkErrors();
-                checkErrors();
-                checkErrors();
-                checkErrors();
-                checkErrors();
+                const errorCode = checkErrors({
+                  inputImageWidth: data.target.naturalWidth,
+                  inputImageHeight: data.target.naturalHeight,
+                });
 
                 if (inputBlob !== "/gradient.png" && errorCode === 0) {
                   convert();
