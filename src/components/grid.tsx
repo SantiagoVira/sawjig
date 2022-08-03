@@ -1,6 +1,7 @@
 import { Center, Divider, HStack, VStack } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 import { gridSizeAtom, inputImageSizeAtom } from "../atoms";
+import { useErrorCode } from "../hooks/useErrorCode";
 import { maxImageSize } from "./image";
 
 const arraySizeN = (n: string) => {
@@ -12,6 +13,9 @@ const arraySizeN = (n: string) => {
 const Grid: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const [[gridRows, gridCols]] = useAtom(gridSizeAtom);
   const [[inputImageWidth, inputImageHeight]] = useAtom(inputImageSizeAtom);
+  const { errorCode } = useErrorCode();
+
+  if (errorCode === 6) return <>{children}</>;
 
   return (
     <Center>
