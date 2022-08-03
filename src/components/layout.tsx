@@ -3,7 +3,7 @@ import Header from "./header";
 
 const Layout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
-    <Flex flexDirection="column" maxW="100vw" minH="100vh" pb="4rem">
+    <Flex flexDirection="column" maxW="100vw" minH="100vh" pb="7rem">
       <Header />
       <Flex
         alignItems="center"
