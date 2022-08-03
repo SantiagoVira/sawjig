@@ -5,6 +5,7 @@ import {
   originalImageFileAtom,
   inputImageSizeAtom,
   inputImageNaturalSizeAtom,
+  isLoadingImageAtom,
 } from "../atoms";
 import Grid from "./grid";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -17,6 +18,7 @@ const ImageInput: React.FC = () => {
   const [, setOriginalImageFile] = useAtom(originalImageFileAtom);
   const [, setInputImageSize] = useAtom(inputImageSizeAtom);
   const [, setInputImageNaturalSize] = useAtom(inputImageNaturalSizeAtom);
+  const [isLoadingImage] = useAtom(isLoadingImageAtom);
 
   const [inputBlob, setInputBlob] = useState<string>("/gradient.png");
 
@@ -41,6 +43,7 @@ const ImageInput: React.FC = () => {
         accept="image/*"
         autoComplete="off"
         style={{ display: "none" }}
+        disabled={isLoadingImage}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           if (e.target.files && e.target.files[0]) {
             const imType = e.target.files[0]["type"];
@@ -122,13 +125,14 @@ const ImageInput: React.FC = () => {
               color="white"
               borderRadius="md"
               fontSize="14px"
-              backgroundColor="pink.500"
+              backgroundColor={isLoadingImage ? "bg.800" : "pink.500"}
               _hover={{
-                bgColor: "pink.600",
+                bgColor: isLoadingImage ? "bg.800" : "pink.600",
               }}
               _active={{
-                bgColor: "pink.700",
-              }}>
+                bgColor: isLoadingImage ? "bg.800" : "pink.700",
+              }}
+              disabled={isLoadingImage}>
               Upload
             </Button>
           </Box>
