@@ -30,22 +30,28 @@ export const useConvert = () => {
     formData.append("rows", gridRows);
     formData.append("cols", gridCols);
     formData.append("width", imgWidth);
+    formData.append("duration", "5000");
+
+    const path = process.env.REACT_APP_BACKEND_URL! + "animation";
 
     await axios
-      .put(process.env.REACT_APP_BACKEND_URL!, formData, {
+      .post(path, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        timeout: 30000,
+        timeout: 60000,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
         responseType: "blob",
       })
       .then((response) => {
         console.log(response);
         setDisplayImageBlob(URL.createObjectURL(response.data));
       })
-      .catch((err) =>
-        errorToast(`${err.message}, Please try a different image`)
-      );
+      .catch((err) => {
+        console.error(err);
+        errorToast(`${err.message}, Please try a different image`);
+      });
     setIsLoadingImage(false);
   };
 
