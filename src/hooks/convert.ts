@@ -30,9 +30,9 @@ export const useConvert = () => {
     formData.append("rows", gridRows);
     formData.append("cols", gridCols);
     formData.append("width", imgWidth);
-    formData.append("duration", "5000");
+    // formData.append("duration", "5000");
 
-    const path = process.env.REACT_APP_BACKEND_URL! + "animation";
+    const path = process.env.REACT_APP_BACKEND_URL! + "original";
 
     await axios
       .post(path, formData, {

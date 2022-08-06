@@ -21,8 +21,8 @@ const Grid: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     <Center>
       <VStack
         position="absolute"
-        w={inputImageWidth || "0"}
-        h={inputImageHeight || "0"}
+        w={inputImageWidth}
+        h={inputImageHeight}
         maxW={maxImageSize}
         maxH={maxImageSize}
         alignItems="center"

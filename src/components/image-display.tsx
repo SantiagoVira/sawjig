@@ -21,7 +21,8 @@ const ImageDisplay: React.FC = () => {
           border="1px solid"
           bg="bg.900"
           borderRadius="8px"
-          p="0.6rem">
+          p="0.6rem"
+          w="85%">
           To save your result, hold down on the image above and select "Add to
           Photos"
         </Text>
